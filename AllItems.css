@@ -1,0 +1,7 @@
+﻿input[type=checkbox]:checked{
+    background: rgb(0, 255, 33);
+}
+input[type=checkbox]{
+    height:30px;
+    width:30px;
+}
