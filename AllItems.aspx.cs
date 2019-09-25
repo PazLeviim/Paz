@@ -20,7 +20,7 @@ public partial class AllItems : System.Web.UI.Page
         for (int i = 0; i < Convert.ToInt16(Session["Count"]); i++)
             Response.Write("<table><tr class=missions><th>" + Convert.ToInt16(i + 1) + ".</th><th>" + Session["title" + i] + "</th><th>" + Session["description" + i] + "</th>" +
                 "<th>" + Session["date" + i] + "</th><th>" + Session["deadline" + i] + "</th><th>" + Session["place" + i] + "</th><th class=statuss name=status" + i + ">" + Session["status" + i] + "</th><th><input type=checkbox onclick='Done()' name=MissionCheck" + i + " class=missions_done  /></th>" +
-                "<th><button type=submit style=height:28px;width:28px; class=removers name=Remover"+i+" readonly value="+rows[i]+" >X</button></th></tr></table><br/>");
+                "<th><button type=submit style=height:28px;width:28px; class=removers name=Remover"+i+" readonly value="+rows[i]+" ><b>X</b></button></th></tr></table><br/>");
     }
     public int CountDB(string sqlcmd) //Take the number of how much rows I have
     {
@@ -94,8 +94,17 @@ public partial class AllItems : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string sql;
+        int min_count=0;
         int count = CountDB("select * from Missions");//Give me the number of records on sql
-        sql = string.Format("DBCC CHECKIDENT('Missions',RESEED,{0})",count-1);
+        for (int i = 0; 0 < count; i++)
+        {
+            if (CountDB("select * from Missions where id=" + i) == 0)//Check every ID to see that we not skiping on number
+            {
+                min_count = i;
+                break;
+            }
+        }
+        sql = string.Format("DBCC CHECKIDENT('Missions',RESEED,{0})",min_count-1);
         UpdateDB(sql);
         if (Request.Form["editMission"] == "Save")//Create the new mission and save it in sql DB
         {
