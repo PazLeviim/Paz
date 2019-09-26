@@ -130,12 +130,16 @@ public partial class AllItems : System.Web.UI.Page
         }
         if (Request.Form["Save"] == "Save")
         {
-            for (int i = 0; i < count; i++)
+            int index_row = 0;
+            foreach (int i in rows)
             {
-                if (Request.Form["MissionCheck" + Convert.ToString(i)] == "Done")
+                if (i == 0 && index_row > 0)
+                    break;
+                if (Request.Form["MissionCheck" + Convert.ToString(index_row)] == "Done")
                     MissionDone(i);
                 else
                     MissionNotDone(i);
+                index_row++;
             }
         }
         for (int i = 0; i < count; i++)
